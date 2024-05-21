@@ -78,7 +78,7 @@ VALIDATE $? "build the application"
 cp /home/ec2-user/devops-code/bash-scripts/backend.service /etc/systemd/system/ &>>"$LOG_FILE"
 VALIDATE $? "adding service file for backend"
 
-mysql -h db.ullagallu.cloud -uroot -psiva < /app/schema/backend.sql "$LOG_FILE"
+mysql -h db.ullagallubuffellomilk.store -uroot -psiva < /app/schema/backend.sql "$LOG_FILE"
 VALIDATE $? "configure the schema"
 
 systemctl daemon-reload &>>"$LOG_FILE"
