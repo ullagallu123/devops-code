@@ -67,7 +67,7 @@ VALIDATE $? "Download the app to `/app`"
 cd /app &>>"$LOG_FILE"
 VALIDATE $? "Changing to Folder 'app'"
 
-npm install
+npm install &>>"$LOG_FILE"
 VALIDATE $? "build the application"
 
 
