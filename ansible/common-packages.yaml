@@ -1,0 +1,19 @@
+- name: Install most common packages
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install common packages
+      ansible.builtin.dnf:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - wget
+        - curl
+        - nano
+        - vim
+        - tree
+        - net-tools
+        - bind-utils
+        - telnet
+        - git
