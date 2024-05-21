@@ -5,6 +5,7 @@ TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPT_NAME=$(echo "$0" | cut -d "." -f1)
 LOG_FILE=/tmp/$TIMESTAMP-$SCRIPT_NAME.log
 
+read -p "Please Enter your root passwd:" mysql_root_passwd
 # colors
 R="\e[31m"
 G="\e[32m"
@@ -47,7 +48,7 @@ VALIDATE $? "Enabling MySQL Service to start on boot"
 
 # Check if mysql_secure_installation command is available
 if command -v mysql_secure_installation &>/dev/null; then
-    mysql_secure_installation --set-root-pass siva &>>$LOG_FILE
+    mysql_secure_installation --set-root-pass ${mysql_root_passwd} &>>$LOG_FILE
     VALIDATE $? "Setting Root Password"
 else
     echo -e "${Y}mysql_secure_installation command not found, skipping root password setup${N}"
