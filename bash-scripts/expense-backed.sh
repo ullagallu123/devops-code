@@ -62,7 +62,7 @@ else
 fi
 
 git clone https://github.com/ullagallu123/exp-backend.git /app &>>"$LOG_FILE"
-VALIDATE $? "Download the app to `/app`"
+VALIDATE $? "Download code into the app dir "
 
 cd /app &>>"$LOG_FILE"
 VALIDATE $? "Changing to Folder 'app'"
