@@ -61,8 +61,12 @@ else
     VALIDATE $? "Creating Folder 'app'"
 fi
 
-git clone https://github.com/ullagallu123/exp-backend.git /app &>>"$LOG_FILE"
-VALIDATE $? "Download code into the app dir "
+if [ -d /app/.git ]; then
+    echo -e "${Y}Repository already cloned, skipping download${N}"
+else
+    git clone https://github.com/ullagallu123/exp-backend.git /app &>>"$LOG_FILE"
+    VALIDATE $? "Download code into the app dir"
+fi
 
 cd /app &>>"$LOG_FILE"
 VALIDATE $? "Changing to Folder 'app'"
