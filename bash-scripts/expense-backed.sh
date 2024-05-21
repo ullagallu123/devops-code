@@ -5,7 +5,6 @@ TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPT_NAME=$(echo "$0" | cut -d "." -f1)
 LOG_FILE=/tmp/$TIMESTAMP-$SCRIPT_NAME.log
 
-read -p "Please Enter your root passwd:" mysql_root_passwd
 # colors
 R="\e[31m"
 G="\e[32m"
