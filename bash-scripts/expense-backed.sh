@@ -68,6 +68,7 @@ else
     VALIDATE $? "Download code into the app dir"
 fi
 
+
 cd /app &>>"$LOG_FILE"
 VALIDATE $? "Changing to Folder 'app'"
 
@@ -76,6 +77,9 @@ VALIDATE $? "build the application"
 
 cp /home/ec2-user/devops-code/bash-scripts/backend.service /etc/systemd/system/ &>>"$LOG_FILE"
 VALIDATE $? "adding service file for backend"
+
+mysql -h db.ullagallu.cloud -uroot -psiva < /app/schema/backend.sql "$LOG_FILE"
+VALIDATE $? "configure the schema"
 
 systemctl daemon-reload &>>"$LOG_FILE"
 VALIDATE $? "reload the service files in the system"
