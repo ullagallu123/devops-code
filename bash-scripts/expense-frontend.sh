@@ -34,11 +34,11 @@ VALIDATE() {
 dnf install nginx -y &>>"$LOG_FILE"
 VALIDATE $? "Installing Nginx"
 
-systemctl enable nginx &>>"$LOG_FILE"
-VALIDATE $? "Enabling Nginx on boot"
+# systemctl enable nginx &>>"$LOG_FILE"
+# VALIDATE $? "Enabling Nginx on boot"
 
-systemctl start nginx &>>"$LOG_FILE"
-VALIDATE $? "Starting Nginx server"
+# systemctl start nginx &>>"$LOG_FILE"
+# VALIDATE $? "Starting Nginx server"
 
 rm -rf /usr/share/nginx/html/* &>>"$LOG_FILE"
 VALIDATE $? "Removing default Nginx content"
