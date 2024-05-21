@@ -12,7 +12,7 @@ Y="\e[33m"
 N="\e[0m"
 
 echo "Script started executing at: $TIMESTAMP"
-echo "Log file: $LOG_FILE"
+echo "Log file: "$LOG_FILE""
 
 # Check if the script is run as root
 if [ $USERID -ne 0 ]; then
@@ -32,31 +32,46 @@ VALIDATE() {
 }
 
 
-dnf module disable nodejs:18 -y &>>$LOG_FILE
+dnf module disable nodejs:18 -y &>>"$LOG_FILE"
 VALIDATE $? "disable current nodjs module"
 
-dnf module enable nodejs:20 -y &>>$LOG_FILE
+dnf module enable nodejs:20 -y &>>"$LOG_FILE"
 VALIDATE $? "enabling nodejs:20"
 
-dnf install nodejs -y &>>$LOG_FILE
+dnf install nodejs -y &>>"$LOG_FILE"
 VALIDATE $? "installing nodejs 20"
 
-node -v &>>$LOG_FILE
+node -v &>>"$LOG_FILE"
 VALIDATE $? "check the version of nodejs"
+
+dnf install mysql -y &>>"$LOG_FILE"
+VALIDATE $? "installing mysql client"
 
 if id "wages" &>/dev/null; then
     echo -e "${Y}User 'wages' already exists, skipping creation${N}"
 else
-    useradd wages &>>$LOG_FILE
+    useradd wages &>>"$LOG_FILE"
     VALIDATE $? "Creating user 'wages'"
 fi
 
-if ls / | grep /app &>/dev/null; then
-     echo -e "${Y}Folder '/app' already exists, skipping creation${N}"
+if [ -d /app ]; then
+    echo -e "${Y}Folder '/app' already exists, skipping creation${N}"
 else
-    mkdir /app &>>$LOG_FILE
+    mkdir /app &>>"$LOG_FILE"
     VALIDATE $? "Creating Folder 'app'"
 fi
+
+git clone https://github.com/ullagallu123/exp-backend.git /app &>>"$LOG_FILE"
+VALIDATE $? "Download the app to `/app`"
+
+cd /app &>>"$LOG_FILE"
+VALIDATE $? "Changing to Folder 'app'"
+
+npm install
+VALIDATE $? "build the application"
+
+
+
 
 
 
