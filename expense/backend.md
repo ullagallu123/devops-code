@@ -24,11 +24,11 @@ useradd wages
 ```
 7. create dir and change to dir
 ```bash
-mkdir /app; cd /app
+mkdir /app
 ```
 8. clone the code
 ```bash
-https://github.com/ullagallu123/exp-backend.git
+git clone https://github.com/ullagallu123/exp-backend.git /app
 ```
 9. build the application
 ```bash
@@ -60,7 +60,8 @@ systemctl enable backend
 12. app need to conn db but it need to client
 ```bash
 dnf install mysql -y
-``
+```
+
 13. execute the schema
 ```bash
 mysql -h db.ullagallu.cloud -uroot -psiva
