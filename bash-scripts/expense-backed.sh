@@ -74,7 +74,7 @@ VALIDATE $? "Changing to Folder 'app'"
 npm install &>>"$LOG_FILE"
 VALIDATE $? "build the application"
 
-cp backend.service /etc/systemd/system/ &>>"$LOG_FILE"
+cp /home/ec2-user/devops-code/bash-scripts/backend.service /etc/systemd/system/ &>>"$LOG_FILE"
 VALIDATE $? "adding service file for backend"
 
 
