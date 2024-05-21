@@ -77,6 +77,15 @@ VALIDATE $? "build the application"
 cp /home/ec2-user/devops-code/bash-scripts/backend.service /etc/systemd/system/ &>>"$LOG_FILE"
 VALIDATE $? "adding service file for backend"
 
+systemctl daemon-reload &>>"$LOG_FILE"
+VALIDATE $? "reload the service files in the system"
+
+systemctl start backend &>>"$LOG_FILE"
+VALIDATE $? "start the backend service"
+
+systemctl enable backend &>>"$LOG_FILE"
+VALIDATE $? "enabling backend service on boot"
+
 
 
 
