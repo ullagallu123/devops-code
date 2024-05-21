@@ -2,8 +2,8 @@
 
 USERID=$(id -u) # It gives user id
 TIMESTAMP=$(date +%F-%H-%M-%S)
-SCRIPT_NAME=$(echo "$0" | cut -d "." -f1)
-LOG_FILE=/tmp/$TIMESTAMP-$SCRIPT_NAME.log
+SCRIPT_NAME=$(basename "$0" | cut -d "." -f1)
+LOG_FILE="/tmp/${TIMESTAMP}-${SCRIPT_NAME}.log"
 
 # colors
 R="\e[31m"
@@ -12,7 +12,7 @@ Y="\e[33m"
 N="\e[0m"
 
 echo "Script started executing at: $TIMESTAMP"
-echo "Log file: "$LOG_FILE""
+echo "Log file: $LOG_FILE"
 
 # Check if the script is run as root
 if [ $USERID -ne 0 ]; then
@@ -24,29 +24,29 @@ fi
 
 VALIDATE() {
     if [ $1 -ne 0 ]; then
-        echo -e "$2.......$R Failed $N"
+        echo -e "$2.......${R}Failed${N}"
         exit 1
     else
-        echo -e "$2.....$G Success $N"
+        echo -e "$2.....${G}Success${N}"
     fi
 }
 
-
 dnf module disable nodejs:18 -y &>>"$LOG_FILE"
-VALIDATE $? "disable current nodjs module"
+VALIDATE $? "Disabling current Node.js module"
 
 dnf module enable nodejs:20 -y &>>"$LOG_FILE"
-VALIDATE $? "enabling nodejs:20"
+VALIDATE $? "Enabling Node.js 20"
 
 dnf install nodejs -y &>>"$LOG_FILE"
-VALIDATE $? "installing nodejs 20"
+VALIDATE $? "Installing Node.js 20"
 
 node -v &>>"$LOG_FILE"
-VALIDATE $? "check the version of nodejs"
+VALIDATE $? "Checking the version of Node.js"
 
 dnf install mysql -y &>>"$LOG_FILE"
-VALIDATE $? "installing mysql client"
+VALIDATE $? "Installing MySQL client"
 
+# Check if the user 'wages' already exists
 if id "wages" &>/dev/null; then
     echo -e "${Y}User 'wages' already exists, skipping creation${N}"
 else
@@ -54,48 +54,45 @@ else
     VALIDATE $? "Creating user 'wages'"
 fi
 
-if [ -d /app ]; then
-    echo -e "${Y}Folder '/app' already exists, skipping creation${N}"
-else
-    mkdir /app &>>"$LOG_FILE"
-    VALIDATE $? "Creating Folder 'app'"
-fi
+# Check if directory exists and create if not
+check_directory() {
+    if [ -d "$1" ]; then
+        echo -e "${Y}Folder '$1' already exists, skipping creation${N}"
+    else
+        mkdir -p "$1" &>>"$LOG_FILE"
+        VALIDATE $? "Creating Folder '$1'"
+    fi
+}
 
+check_directory "/app"
+
+# Check if repository is already cloned
 if [ -d /app/.git ]; then
     echo -e "${Y}Repository already cloned, skipping download${N}"
 else
     git clone https://github.com/ullagallu123/exp-backend.git /app &>>"$LOG_FILE"
-    VALIDATE $? "Download code into the app dir"
+    VALIDATE $? "Downloading code into the app directory"
 fi
 
-
 cd /app &>>"$LOG_FILE"
-VALIDATE $? "Changing to Folder 'app'"
+VALIDATE $? "Changing to Folder '/app'"
 
 npm install &>>"$LOG_FILE"
-VALIDATE $? "build the application"
+VALIDATE $? "Building the application"
 
 cp /home/ec2-user/devops-code/bash-scripts/backend.service /etc/systemd/system/ &>>"$LOG_FILE"
-VALIDATE $? "adding service file for backend"
+VALIDATE $? "Adding service file for backend"
 
 mysql -h db.ullagallubuffellomilk.store -uroot -psiva < /app/schema/backend.sql &>>"$LOG_FILE"
-VALIDATE $? "configure the schema"
+VALIDATE $? "Configuring the schema"
 
 systemctl daemon-reload &>>"$LOG_FILE"
-VALIDATE $? "reload the service files in the system"
+VALIDATE $? "Reloading the service files in the system"
 
 systemctl start backend &>>"$LOG_FILE"
-VALIDATE $? "start the backend service"
+VALIDATE $? "Starting the backend service"
 
 systemctl enable backend &>>"$LOG_FILE"
-VALIDATE $? "enabling backend service on boot"
-
-
-
-
-
-
-
-
+VALIDATE $? "Enabling backend service on boot"
 
 echo "Script execution completed at: $(date +%F-%H-%M-%S)"
