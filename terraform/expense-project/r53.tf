@@ -1,12 +1,10 @@
 resource "aws_route53_record" "www" {
+  count   = length(var.instance_names)
   zone_id = var.zone_id
-  name    = "www.example.com"
+  name    = var.instance_names[count.index] == "frontend" ? "${var.instance_names[count.index]}.${var.domain_name}" : "${var.instance_names[count.index]}.${var.domain_name}"
   type    = "A"
-  ttl     = 300
-  records = [aws_eip.lb.public_ip]
+  ttl     = 1
+  records = var.instance_names[count.index] == "frontend" ? [aws_instance.expense[count.index].public_ip] : [aws_instance.expense[count.index].private_ip]
+  allow_overwrite = true
 }
 
-
-variable "zone_id" {
-  default = ""
-}

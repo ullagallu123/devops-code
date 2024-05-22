@@ -1,8 +1,7 @@
 resource "aws_instance" "expense" {
-  count = length(var.instance_names)
+  for_each               = var.instance_names
   ami                    = var.ami
-  #instance_type          = each.value == "db" ? "t3a.small" : "t3.micro"
-  instance_type = "t3.micro"
+  instance_type          = each.value
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
   key_name               = var.key_name
 
@@ -10,7 +9,7 @@ resource "aws_instance" "expense" {
   tags = merge(
     var.common_tags,
     {
-      Name = var.instance_names[count.index]
+      Name = each.key
     }
   )
 }

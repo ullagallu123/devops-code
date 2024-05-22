@@ -6,7 +6,11 @@ variable "region" {
   default = "us-east-1"
 }
 variable "instance_names" {
-  default = ["db", "backend", "frontend"]
+  default = {
+    "db"       = "t3.micro",
+    "backend"  = "t3.micro",
+    "frontend" = "t3.micro"
+  }
 }
 
 variable "ami" {
