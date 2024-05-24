@@ -1,14 +1,14 @@
 module "expense-vpc" {
   source       = "../../vpc"
-  project_name = "expense"
-  environment  = "dev"
+  project_name = var.project_name
+  environment  = var.environment
 
   vpc_cidr_range   = "10.1.0.0/16"
   instance_tenancy = "default"
 
   common_tags = {
-    "Project_Name" = "Expense"
-    "Environment"  = "Development"
+    "Project_Name" = "${var.project_name}"
+    "Environment"  = "${var.environment}"
     "Developer"    = "sivaramakrishna"
     "Terraform"    = "True"
   }

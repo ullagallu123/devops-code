@@ -13,3 +13,7 @@ output "private_subnet_id" {
 output "db_subnet_id" {
   value = module.expense-vpc.db_subnet_id
 }
+
+output "aws_db_subnet_group_id" {
+  value = module.expense-vpc.db_subnet_group_id
+}

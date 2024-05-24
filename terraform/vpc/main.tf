@@ -185,3 +185,14 @@ resource "aws_route" "db_peering" {
   vpc_peering_connection_id = aws_vpc_peering_connection.expense[0].id
 }
 
+resource "aws_db_subnet_group" "default" {
+  name       = local.name
+  subnet_ids = aws_subnet.db[*].id
+
+  tags = merge(
+    var.common_tags,
+    var.db_group_tags,
+    { Name = local.name }
+  )
+}
+
