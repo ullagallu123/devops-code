@@ -21,3 +21,9 @@ resource "aws_ssm_parameter" "db_subnet_id" {
   type  = "StringList"
   value = join(",", module.expense-vpc.db_subnet_id)
 }
+
+resource "aws_ssm_parameter" "db_group_name" {
+  name  = "/${var.project_name}/${var.environment}/db-group-name"
+  type  = "String"
+  value = module.expense-vpc.db_group_name
+}
