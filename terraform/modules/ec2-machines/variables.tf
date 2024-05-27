@@ -5,7 +5,9 @@ variable "profile" {
 variable "region" {
   default = "us-east-1"
 }
-
+variable "instance_type" {
+  default = "t3.micro"
+}
 variable "project_name" {
   default = "expense"
 }
@@ -14,8 +16,18 @@ variable "environment" {
   default = "development"
 }
 
-variable "instance_name" {
+variable "bastion_instance_name" {
   default = "bastion"
+}
+variable "ansible_instance_name" {
+  default = "ansible"
+}
+variable "frontend_instance_name" {
+  default = "frontend"
+}
+
+variable "backend_instance_name" {
+  default = "backend"
 }
 
 variable "common_tags" {
