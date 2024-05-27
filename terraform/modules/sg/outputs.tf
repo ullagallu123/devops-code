@@ -7,3 +7,9 @@ output "backend_sg" {
 output "frontend_sg" {
   value = module.frontend.sg_id
 }
+output "ansible_sg" {
+  value = module.ansible.sg_id
+}
+output "bastion_sg" {
+  value = module.bastion.sg_id
+}
