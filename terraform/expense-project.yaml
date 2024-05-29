@@ -1,0 +1,52 @@
+project:
+  name: Expense
+  required_resources:
+    - vpc
+    - sg
+    - rds
+    - ec2
+    - ssm_parameter_store
+    - alb
+    - asg
+  tasks:
+    - develop the code and reuse each and every component using modules
+  vpc:
+    module: expense-project
+    ssm_parameter_store:
+      - store vpc_id in parameter store
+  sg:
+    modules:
+      - frontend-sg
+      - backend-sg
+      - rds-sg
+      - bastion-sg
+      - alb-sg
+      - ansible-sg
+      - ssm_parameter_store:
+          - store all sg ids in parameter store
+  ec2:
+    modules:
+      - bastion
+      - ansible
+      - frontend
+      - backend
+      - R53:
+          - update the records in the R53
+  rds:
+    module:
+      - expense-mysql
+  alb:
+    modules:
+      - internal_alb:
+          description: traffic routing from frontend to backend
+      - external_alb:
+          description: traffic routing from r53 to frontend
+  asg:
+    modules:
+      - backend_asg:
+          description: used to auto scale backend instances
+      - frontend_asg:
+          description: used to auto scale frontend instances
+
+
+- To check log of boostrap tail -f /var/log/cloud-init-output.log

@@ -1,4 +1,7 @@
 #!/bin/bash
 dnf install ansible -y
 cd /tmp
-git clone https://github.com/daws-78s/expense-ansible-roles.git
+git clone https://github.com/ullagallu123/expense-ansible-roles.git
+cd expense-ansible-roles
+ansible-playbook main.yaml -e component=backend -e login_password=ExpenseApp1
+ansible-playbook main.yaml -e component=frontend
