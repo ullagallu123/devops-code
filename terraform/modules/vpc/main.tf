@@ -18,5 +18,5 @@ module "expense-vpc" {
   db_subnet_cidrs      = ["10.1.21.0/24", "10.1.22.0/24"]
 
   peering_required = false
-  nat_required     = false
+  nat_required     = true
 }

@@ -38,3 +38,8 @@ variable "common_tags" {
     developer   = "sivaramakrishna"
   }
 }
+
+
+variable "zone_name" {
+  default = "ullagallubuffellomilk.store"
+}

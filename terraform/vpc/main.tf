@@ -86,11 +86,12 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private.id
 }
 
-# resource "aws_route" "private" {
-#   route_table_id         = aws_route_table.private.id
-#   destination_cidr_block = "0.0.0.0/0"
-#   nat_gateway_id         = aws_nat_gateway.example.id
-# }
+resource "aws_route" "private" {
+  count = var.nat_required ? 1 : 0
+  route_table_id         = aws_route_table.private.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.example[0].id
+}
 ###    DB subnets,Private Route table,Subents Association and Routes   ###
 resource "aws_subnet" "db" {
   count             = length(var.db_subnet_cidrs)
@@ -118,11 +119,12 @@ resource "aws_route_table_association" "db" {
   subnet_id      = element(aws_subnet.db[*].id, count.index)
   route_table_id = aws_route_table.db.id
 }
-# resource "aws_route" "db" {
-#   route_table_id         = aws_route_table.db.id
-#   destination_cidr_block = "0.0.0.0/0"
-#   nat_gateway_id         = aws_nat_gateway.example.id
-# }
+resource "aws_route" "db" {
+  count = var.nat_required ? 1 : 0
+  route_table_id         = aws_route_table.db.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.example[0].id
+}
 
 resource "aws_eip" "eip" {
   count  = var.nat_required ? 1 : 0

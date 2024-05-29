@@ -22,3 +22,7 @@ variable "common_tags" {
     "Project"     = "expense"
   }
 }
+
+variable "zone_name" {
+  default = "ullagallubuffellomilk.store"
+}
